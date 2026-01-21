@@ -1,3 +1,12 @@
 services:
   db: 
-    container_name:postgres_container
+    container_name: postgres_container
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_DB: db
+      POSTGRES_USER: db_user
+    volumes:
+      - ./postres/data:/var/lib/postgresql/data
