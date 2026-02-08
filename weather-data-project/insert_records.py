@@ -57,7 +57,7 @@ def insert_records(conn,data):
                     wind_speed,
                     time,
                     insert_at,
-                    ufc_offset
+                    utc_offset
                 ) VALUES (%s,%s,%s,%s,%s,NOW(),%s)
             """,(
                 location['name'],
@@ -72,7 +72,17 @@ def insert_records(conn,data):
     except psycopg2.Error as e:
         print(f"Error inserting data into the table:{e}")
         raise
-data=mock_fetch_data()
-conn=connect_to_db()
-create_table(conn)
-insert_records(conn,data)
+
+def main():
+    try:
+        data=mock_fetch_data()
+        conn=connect_to_db()
+        create_table(conn)
+        insert_records(conn,data)
+    except Exception as e:
+        print(f"An error occurred during execution: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+            print("Database connection closed")
+main()
